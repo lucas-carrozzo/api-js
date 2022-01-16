@@ -1,4 +1,4 @@
-const { User } = require("../../db/models");
+const createUser = require("../../services/auth")
 
 module.exports = async (req, res) => {
     // "login/:id" => login/1 =>req.params.id
@@ -25,14 +25,6 @@ module.exports = async (req, res) => {
         return res.status(err.code || 500).send({
             message: "error de sistema",
             detail: err.message
-        })
+        });
     }
 };
-
-async function createUser(parametros) {
-    try {
-        return await User.create(parametros);
-    } catch (error) {
-        throw { code: 500, message: "la base de datos rompio" };
-    }
-}

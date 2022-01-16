@@ -9,7 +9,9 @@ const getJWT = (user) => {
     email: user.email,
   };
 
-  return jwt.sign(userObject, secret, {});
+  return jwt.sign(userObject, secret, {
+    expiresIn: 60 * 60 * 24,
+  }); // devuelve un hash en jwt
 };
 
 const verifyJwt = async (token) => {

@@ -40,6 +40,7 @@ module.exports = (sequelize, DataTypes) => {
         }
     );
 
+    // hook
     User.beforeCreate(cambiosDeContraseña);
     User.prototype.toJSON = function () {
         var values = Object.assign({}, this.get());
