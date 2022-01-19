@@ -1,8 +1,10 @@
 const express = require("express");
 const cors = require("cors");
 const bodyParser = require("body-parser");
-const morgan = require("morgan")
+
 const logMiddleware = require("./middlewares/logMiddleware")
+const saveUserLogMiddleware = require('./middlewares/saveUserLogMiddleware')
+const notFoundMiddleware = require('./middlewares/notFoundMiddleware')
 
 //Router
 const router = require("./routes");
@@ -14,13 +16,16 @@ const PORT = process.env.PORT
 
 app.use(cors());
 
-// app.use(morgan('combined'))
+// middleware de aplicación
 app.use(logMiddleware)
 
 app.use(bodyParser.json({ limit: "100kb", parametersLimit: "10000" }));
 app.use(bodyParser.urlencoded({ extended: true }));
 
 app.use("/api/v1", router);
+
+app.use(saveUserLogMiddleware)
+app.use(notFoundMiddleware)
 
 app.listen(PORT, () => {
     console.info("\n----- servidor prendido en el puerto:" + PORT + "----");

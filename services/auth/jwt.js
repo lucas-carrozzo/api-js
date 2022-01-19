@@ -14,8 +14,8 @@ const getJWT = (user) => {
   }); // devuelve un hash en jwt
 };
 
-const verifyJwt = async (token) => {
+const verifyJwtAndLoadPayload = async (token) => {
   return jwt.verify(token, secret);
 };
 
-module.exports = { getJWT, verifyJwt };
+module.exports = { getJWT, verifyJwtAndLoadPayload };

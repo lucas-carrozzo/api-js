@@ -1,4 +1,4 @@
-const createUser = require("../../services/auth")
+const { createUser } = require("../../services/auth")
 
 module.exports = async (req, res) => {
     // "login/:id" => login/1 =>req.params.id

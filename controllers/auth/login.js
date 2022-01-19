@@ -1,13 +1,14 @@
 const { User } = require("../../db/models");
-const bcrypt = require("bcryptjs");
 const { getJwt } = require("../../services/auth")
+const badRequestError = require("../../errors/badRequestError")
+const notFoundError = require("../../errors/notFoundError")
 
 module.exports = async (req, res) => {
     const { email, password } = req.body
 
     try {
         if (!email | !password) {
-            throw { code: 403, message: "campos requeridos" };
+            throw badRequestError("campos requeridos");
         }
 
         // primero vamos a buscar el usuario en la bd
@@ -16,9 +17,13 @@ module.exports = async (req, res) => {
             email
         }})
 
+        if (!user) {
+            throw notFoundError("usuario no encontrado")
+        }
+
         // devuelve un true si la comparación del pass con el hash es correcta
-        if (!bcrypt.compareSync(password, user.password)) {
-            throw { code: 403, message: "password incorrecto" };
+        if (!user.verifyPassword(password)) {
+            throw badRequestError("password incorrecto");
         }
 
         const token = getJwt({
@@ -30,8 +35,9 @@ module.exports = async (req, res) => {
 
     } catch (err) {
         return res.status(err.code || 500).send({
-            message: "error de sistema",
-            detail: err.message,
+            code: err.code,
+            text: err.text,
+            detail: err.detail,
         });
     }
 }

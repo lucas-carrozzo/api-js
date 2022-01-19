@@ -1,5 +1,5 @@
 const { User } = require("../../db/models");
-const { verify } = require("../../services/auth")
+const { verifyJwtAndLoadPayload } = require("../../services/auth")
 
 module.exports = async (req, res) => {
     try {
@@ -16,7 +16,7 @@ module.exports = async (req, res) => {
         const token = splitString[1]
 
         //
-        const payload = await verify(token)
+        const payload = await verifyJwtAndLoadPayload(token)
         // 1. chequear que el iat no haya expirado
         const nowMiliseconds = (new Date().getTime() + 1) / 1000
         
