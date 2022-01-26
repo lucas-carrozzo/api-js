@@ -50,7 +50,6 @@ module.exports = async (req, res, next) => {
         req.user = user;
 
         next();
-
     } catch (error) {
         res.status(403).json({
             message: "error de sistema",
