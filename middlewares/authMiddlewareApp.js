@@ -6,7 +6,7 @@ const notFoundError = require("../errors/notFoundError");
 module.exports = async (req, res, next) => {
         // vamos a poner la logica para validar el jwt, cargar el usuario y pasarselo al controller
 
-        const privateUrls = ["/profile", "/users"];
+        const privateUrls = ["/profile", "/users", "/task"];
 
         if (privateUrls.some((privateUrls) => req.url.includes(privateUrls))) {
             try {
@@ -50,12 +50,12 @@ module.exports = async (req, res, next) => {
             }
 
             // vamos a cargar dentro del request el user cargado
-            req.user = user;
+            req.user = user.id;
 
             next();
         } catch (error) {
             res.status(403).json({
-                message: "error de sistema",
+                message: "operacion desautorizada",
                 detail: error.message,
             });
         }
